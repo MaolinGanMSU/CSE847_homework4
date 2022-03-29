@@ -6,17 +6,20 @@ num_features = zeros(size(parameters,2),1);
 aucs = zeros(size(parameters,2),1);
 
 for i = 1:size(parameters, 2)
+    % logistic l1 train
     parameter = parameters(i);
     [w, c] = logistic_l1_train(data.X_train, data.y_train, parameter);
 
+    % get the number of features which are not equal to 0
     num_features(i) = sum(w ~= 0);
 
+    % get the predictions and accuracy
     predictions = data.X_test * w + c;
 
     [~, ~, ~, auc] = perfcurve(data.y_test, predictions, 1);
     aucs(i) = auc;
 end
-
+%% draw the figure 
 figure;
 plot(parameters, num_features);
 xlabel("L1 Regularization Parameter");
